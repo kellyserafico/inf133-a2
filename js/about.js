@@ -22,7 +22,15 @@ function parseTweets(runkeeper_tweets) {
 	completedEvents.innerHTML = numCompletedEvents(tweet_array);
 	});
 
+	let liveEvents = document.querySelectorAll('.liveEvents');
+	liveEvents.forEach(liveEvents => {
+	liveEvents.innerHTML = numLiveEvents(tweet_array);
+	});
 
+	let achievements = document.querySelectorAll('.achievements');
+	achievements.forEach(achievements => {
+		achievements.innerHTML = numAchievements(tweet_array);
+	});
 
 }
 
@@ -46,5 +54,29 @@ function numCompletedEvents(tweet_array){
 		}
 	});
 	//7982
+	return count;
+}
+
+function numLiveEvents(tweet_array){
+	let count = 0;
+
+	let num = tweet_array.map(function(tweet){
+		if(tweet.text.startsWith("Watch")){
+			count++;
+		}
+	});
+	//141
+	return count;
+}
+
+function numAchievements(tweet_array){
+	let count = 0;
+
+	let num = tweet_array.map(function(tweet){
+		if(tweet.text.startsWith("Achieved")){
+			count++;
+		}
+	});
+	//56
 	return count;
 }
