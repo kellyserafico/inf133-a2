@@ -17,7 +17,13 @@ function parseTweets(runkeeper_tweets) {
 	document.getElementById('firstDate').innerText = formatDate(tweet_array[tweet_array.length - 2]["time"]);
 	document.getElementById("lastDate").innerText = formatDate(tweet_array[0]["time"]);
 	
-	console.log(tweet_array[0].source());
+	let completedEvents = document.querySelectorAll('.completedEvents');
+	completedEvents.forEach(completedEvents => {
+	completedEvents.innerHTML = numCompletedEvents(tweet_array);
+	});
+
+
+
 }
 
 //Wait for the DOM to load
@@ -29,5 +35,16 @@ function formatDate(date){
 	let words = date.toString().split(' ');
 	let formatDate = words[1] + " " + words[2] + ", " + words[3];
 	return formatDate;
-	
+}
+
+function numCompletedEvents(tweet_array){
+	let count = 0;
+
+	let num = tweet_array.map(function(tweet){
+		if(tweet.text.startsWith("Just posted") || tweet.text.startsWith("Just completed")){
+			count++;
+		}
+	});
+	//7982
+	return count;
 }
