@@ -31,7 +31,7 @@ class Tweet {
         if (this.source != 'completed_event') {
             return "unknown";
         }
-        //TODO: parse the activity type from the text of the tweet
+        // console.log(this.text)
         return "";
     }
 
