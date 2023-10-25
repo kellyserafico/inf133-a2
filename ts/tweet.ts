@@ -43,9 +43,18 @@ class Tweet {
         return 0;
     }
 
-    getHTMLTableRow(rowNumber:number):string {
+    getHTMLTableRow(rowNumber:string):Node {
         //TODO: return a table row which summarizes the tweet with a clickable link to the RunKeeper activity
-        return "<tr>hai</tr>";
+        let row = document.createElement("tr");
+
+        let cell1 = row.insertCell(0);
+        let cell2 = row.insertCell(1);
+        let cell3 = row.insertCell(2);
+
+        cell1.innerHTML = rowNumber;
+        cell2.innerHTML = this.activityType;
+        cell3.innerHTML = this.text;
+        return row;
         
     }
 }

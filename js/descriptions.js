@@ -39,16 +39,13 @@ function filterTweets(input, tweet_array, searchCount){
 		if(input == ""){
 			return;
 		}
-		else if(tweet.text.includes(input.toLowerCase())){
+		else if(tweet.text.toLowerCase().includes(input.toLowerCase())){
 			searchCount.innerHTML++;
 			//populate table
 			cnt++;
 			let row = tweet.getHTMLTableRow(cnt)
+			// console.log(typeof row)
 			tweetTable.appendChild(row)
-
-
-
-			
 		}
 	});
 }
