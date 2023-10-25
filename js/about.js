@@ -19,18 +19,41 @@ function parseTweets(runkeeper_tweets) {
 	
 	let completedEvents = document.querySelectorAll('.completedEvents');
 	completedEvents.forEach(completedEvents => {
-	completedEvents.innerHTML = numCompletedEvents(tweet_array);
+		completedEvents.innerHTML = numCompletedEvents(tweet_array);
 	});
+	let completedEventsPct = document.querySelectorAll(".completedEventsPct");
+	completedEventsPct.forEach(completedEventsPct => {completedEventsPct.innerHTML = math.format((numCompletedEvents(tweet_array) / tweet_array.length * 100), {notation: 'fixed', precision: 2}) + "%"});
 
 	let liveEvents = document.querySelectorAll('.liveEvents');
 	liveEvents.forEach(liveEvents => {
 	liveEvents.innerHTML = numLiveEvents(tweet_array);
 	});
+	let liveEventsPct = document.querySelectorAll(".liveEventsPct");
+	liveEventsPct.forEach(liveEventsPct => {liveEventsPct.innerHTML = math.format((numLiveEvents(tweet_array) / tweet_array.length * 100), {notation: 'fixed', precision: 2}) + "%"});
+
 
 	let achievements = document.querySelectorAll('.achievements');
 	achievements.forEach(achievements => {
 		achievements.innerHTML = numAchievements(tweet_array);
 	});
+	let achievementsPct = document.querySelectorAll(".achievementsPct");
+	achievementsPct.forEach(achievementsPct => {achievementsPct.innerHTML = math.format((numAchievements(tweet_array) / tweet_array.length * 100), {notation: 'fixed', precision: 2}) + "%"});
+
+
+	let miscellaneous = document.querySelectorAll(".miscellaneous");
+	miscellaneous.forEach(miscellaneous => {
+		miscellaneous.innerHTML = numMisc(tweet_array)//63
+	});
+	let miscellaneousPct = document.querySelectorAll(".miscellaneousPct");
+	miscellaneousPct.forEach(miscellaneousPct => {miscellaneousPct.innerHTML = math.format((numMisc(tweet_array) / tweet_array.length * 100), {notation: 'fixed', precision: 2}) + "%"});
+	console.log(typeof miscellaneous.innerHTML)
+
+	let written = document.querySelectorAll(".written");
+	written.forEach(written => {
+		written.innerHTML = numWritten(tweet_array);
+	});
+
+
 
 }
 
@@ -73,10 +96,43 @@ function numAchievements(tweet_array){
 	let count = 0;
 
 	let num = tweet_array.map(function(tweet){
-		if(tweet.text.startsWith("Achieved")){
+		if(tweet.text.startsWith("Achieved") || (tweet.text.startsWith("I just s"))){
 			count++;
 		}
 	});
-	//56
+	//61
 	return count;
+}
+
+function numMisc(tweet_array){
+	return tweet_array.length - numCompletedEvents(tweet_array) - numLiveEvents(tweet_array) - numAchievements(tweet_array);
+}
+
+function numWritten(tweet_array){
+	let cnt = 0;
+	//"Just completed a 10.61 km run with @Runkeeper. Check it out! https://t.co/9GnepQIr70 #Runkeeper
+	//"Just posted a 0.11 km run - TomTom MySports Watch https://t.co/coP26wbwm9 #Runkeeper",
+	//"Just posted a 1.02 mi walk - Treadmill walking  https://t.co/nswZ3CyNtz #Runkeeper
+
+	let filter = ['https://t.co/', '#Runkeeper']
+	let num = tweet_array.map(function(tweet){
+		// let words = tweet.text.toString().split(' ');
+		// console.log(tweet.text.toString())
+		// shouldFilter = true;
+		for(let i = 0; i < filter.length; i++){
+			if (!tweet.text.includes(filter[i])){
+				// console.log(tweet.text)
+				console.log(tweet.text, 'FILTER: ', filter[i])
+				cnt++;
+				break;
+			}
+		}
+		// if (!(tweet.text.includes("Just completed a") && (tweet.text.includes("with @Runkeeper. Check it out! https://t.co/")) && (tweet.text.includes("#Runkeeper")))){
+		// 	console.log(tweet.text);
+		// 	cnt++
+		// 	// console.log(typeof tweet.text)
+		// }
+
+	});
+	console.log(cnt)
 }
