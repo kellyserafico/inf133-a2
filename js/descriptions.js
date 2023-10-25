@@ -36,7 +36,10 @@ function filterTweets(input, tweet_array, searchCount){
 	let cnt = 0;
 	tweetTable.innerHTML = "";
 	tweet_array.map(function(tweet){
-		if(tweet.text.includes(input.toLowerCase())){
+		if(input == ""){
+			return;
+		}
+		else if(tweet.text.includes(input.toLowerCase())){
 			searchCount.innerHTML++;
 			//populate table
 			cnt++;
