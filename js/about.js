@@ -52,8 +52,8 @@ function parseTweets(runkeeper_tweets) {
 	written.forEach(written => {
 		written.innerHTML = numWritten(tweet_array);
 	});
-
-
+	let writtenPct = document.querySelectorAll(".writtenPct");
+	writtenPct.forEach(writtenPct => {writtenPct.innerHTML = math.format((numWritten(tweet_array) / numCompletedEvents(tweet_array) * 100), {notation: 'fixed', precision: 2}) + "%"});
 
 }
 
@@ -114,25 +114,15 @@ function numWritten(tweet_array){
 	//"Just posted a 0.11 km run - TomTom MySports Watch https://t.co/coP26wbwm9 #Runkeeper",
 	//"Just posted a 1.02 mi walk - Treadmill walking  https://t.co/nswZ3CyNtz #Runkeeper
 
-	let filter = ['https://t.co/', '#Runkeeper']
 	let num = tweet_array.map(function(tweet){
-		// let words = tweet.text.toString().split(' ');
-		// console.log(tweet.text.toString())
-		// shouldFilter = true;
-		for(let i = 0; i < filter.length; i++){
-			if (!tweet.text.includes(filter[i])){
-				// console.log(tweet.text)
-				console.log(tweet.text, 'FILTER: ', filter[i])
-				cnt++;
-				break;
-			}
+		let words = tweet.text.toString().split(' ');
+		if(!(tweet.text.includes("Just completed a ") && tweet.text.includes("Just posted a") && tweet.text.includes("https://t.co/") && tweet.text.includes("#Runkeeper"))){
+			console.log(tweet.text)
 		}
-		// if (!(tweet.text.includes("Just completed a") && (tweet.text.includes("with @Runkeeper. Check it out! https://t.co/")) && (tweet.text.includes("#Runkeeper")))){
-		// 	console.log(tweet.text);
-		// 	cnt++
-		// 	// console.log(typeof tweet.text)
-		// }
-
+		
+		
+		
 	});
 	console.log(cnt)
+	return cnt;
 }
