@@ -113,14 +113,20 @@ function numWritten(tweet_array){
 	//"Just completed a 10.61 km run with @Runkeeper. Check it out! https://t.co/9GnepQIr70 #Runkeeper
 	//"Just posted a 0.11 km run - TomTom MySports Watch https://t.co/coP26wbwm9 #Runkeeper",
 	//"Just posted a 1.02 mi walk - Treadmill walking  https://t.co/nswZ3CyNtz #Runkeeper
-
+    let filter = ['https://t.co/', '#Runkeeper', 'Just completed a', '@Runkeeper', 'Just posted a', 'Check it out!']
+    // let shouldFilter = false;
 	let num = tweet_array.map(function(tweet){
-		let words = tweet.text.toString().split(' ');
-		if(!(tweet.text.includes("Just completed a ") && tweet.text.includes("Just posted a") && tweet.text.includes("https://t.co/") && tweet.text.includes("#Runkeeper"))){
-			console.log(tweet.text)
-		}
-		
-		
+        // num++;
+        let botCounter = 0;
+        for(let i = 0; i < filter.length; i++){
+            if (!tweet.text.includes(filter[i])){
+                botCounter++;
+                
+            }
+        }
+        if (botCounter > 2){
+            cnt++;
+        }		
 		
 	});
 	console.log(cnt)
