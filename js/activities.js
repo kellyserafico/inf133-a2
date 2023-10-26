@@ -51,26 +51,31 @@ function parseTweets(runkeeper_tweets) {
 	
 	let maxAvg = findDistanceActivity(tweet_array, [firstMost, secondMost,thirdMost])[1]; // 2
 	let minAvg = findDistanceActivity(tweet_array, [firstMost, secondMost,thirdMost])[0];
-	if(maxAvg == 0){
-		document.getElementById("longestActivityType").innerText = firstMost
-	}
-	else if(maxAvg == 1){
-		document.getElementById("longestActivityType").innerText = secondMost
-	}
-	else{
-		document.getElementById("longestActivityType").innerText = thirdMost
+	longestActivityType = document.getElementById("longestActivityType");
+	shortestActivityType = document.getElementById("shortestActivityType");
+
+	switch(maxAvg){
+		case 0: longestActivityType.innerText = firstMost;
+			break;
+		case 1: longestActivityType.innerText = secondMost;
+			break;
+		default: longestActivityType.innerText = thirdMost;
+		console.log(longestActivityType)
+			break;
 	}
 
-	if(minAvg == 0){
-		document.getElementById("shortestActivityType").innerText = firstMost
+	switch(minAvg){
+		case 0: shortestActivityType.innerText = firstMost;
+		// console.log("lkjdsfsdklfjlksdjflksdjlfkds")
+			break;
+		case 1: shortestActivityType.innerText = secondMost;
+		console.log(shortestActivityType)
+			break;
+		default: shortestActivityType.innerText = thirdMost;	
+			break;
 	}
-	else if(minAvg == 1){
-		document.getElementById("shortestActivityType").innerText = secondMost
-	}
-	else{
-		document.getElementById("shortestActivityType").innerText = thirdMost
-	}
-	
+
+
 	document.getElementById("numberActivities").innerText = activities.length;
 	document.getElementById("firstMost").innerText = firstMost;
 	document.getElementById("secondMost").innerText = secondMost;
@@ -178,7 +183,7 @@ function findDistanceActivity(tweet_array, freq){
 	avg3 = (sum3 / arrSize3).toFixed(2);
 	
     let max = Math.max(avg1, avg2, avg3);
-	let min = Math.min(avg1, avg2, avg3); /////////////////////////////////////////////////////////////////////////
+	let min = Math.min(avg1, avg2, avg3);
 	
 	if(min == avg1){
 		min = 0;
