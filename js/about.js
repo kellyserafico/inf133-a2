@@ -12,7 +12,8 @@ function parseTweets(runkeeper_tweets) {
 	//This line modifies the DOM, searching for the tag with the numberTweets ID and updating the text.
 	//It works correctly, your task is to update the text of the other tags in the HTML file!
 	//TODO: convert to jQuery
-	
+	//TODO: FIND DATES
+	let count = 0;
 	document.getElementById('numberTweets').innerText = tweet_array.length;	
 	document.getElementById('firstDate').innerText = formatDate(tweet_array[tweet_array.length - 2]["time"]);
 	document.getElementById("lastDate").innerText = formatDate(tweet_array[0]["time"]);
@@ -46,7 +47,6 @@ function parseTweets(runkeeper_tweets) {
 	});
 	let miscellaneousPct = document.querySelectorAll(".miscellaneousPct");
 	miscellaneousPct.forEach(miscellaneousPct => {miscellaneousPct.innerHTML = math.format((numMisc(tweet_array) / tweet_array.length * 100), {notation: 'fixed', precision: 2}) + "%"});
-	console.log(typeof miscellaneous.innerHTML)
 
 	let written = document.querySelectorAll(".written");
 	written.forEach(written => {
@@ -72,8 +72,8 @@ function numCompletedEvents(tweet_array){
 	let count = 0;
 
 	let num = tweet_array.map(function(tweet){
-		if(tweet.text.startsWith("Just posted") || tweet.text.startsWith("Just completed")){
-			count++;
+		if(tweet.source == "completed_event"){
+			count++
 		}
 	});
 	//7982
@@ -84,7 +84,7 @@ function numLiveEvents(tweet_array){
 	let count = 0;
 
 	let num = tweet_array.map(function(tweet){
-		if(tweet.text.startsWith("Watch")){
+		if(tweet.source == "live_event"){
 			count++;
 		}
 	});
@@ -96,7 +96,7 @@ function numAchievements(tweet_array){
 	let count = 0;
 
 	let num = tweet_array.map(function(tweet){
-		if(tweet.text.startsWith("Achieved") || (tweet.text.startsWith("I just s"))){
+		if(tweet.source == "achievement"){
 			count++;
 		}
 	});
@@ -129,6 +129,6 @@ function numWritten(tweet_array){
         }		
 		
 	});
-	console.log(cnt)
+	// console.log(cnt)
 	return cnt;
 }
