@@ -32,7 +32,7 @@ function parseTweets(runkeeper_tweets) {
 	let firstMost = secondMost = thirdMost = "";
 	
 
-	console.log(topThree)
+	
 	for(let i = 0; i < frequency.length; i++){ // setting most = top 3 activity name 
 		if (topThree[0] == frequency[i][1]){
 			firstMost = frequency[i][0];
@@ -49,7 +49,27 @@ function parseTweets(runkeeper_tweets) {
 	} 
 
 	
-	findLongDistanceActivity(tweet_array, [firstMost, secondMost,thirdMost])
+	let maxAvg = findDistanceActivity(tweet_array, [firstMost, secondMost,thirdMost])[1]; // 2
+	let minAvg = findDistanceActivity(tweet_array, [firstMost, secondMost,thirdMost])[0];
+	if(maxAvg == 0){
+		document.getElementById("longestActivityType").innerText = firstMost
+	}
+	else if(maxAvg == 1){
+		document.getElementById("longestActivityType").innerText = secondMost
+	}
+	else{
+		document.getElementById("longestActivityType").innerText = thirdMost
+	}
+
+	if(minAvg == 0){
+		document.getElementById("shortestActivityType").innerText = firstMost
+	}
+	else if(minAvg == 1){
+		document.getElementById("shortestActivityType").innerText = secondMost
+	}
+	else{
+		document.getElementById("shortestActivityType").innerText = thirdMost
+	}
 	
 	document.getElementById("numberActivities").innerText = activities.length;
 	document.getElementById("firstMost").innerText = firstMost;
@@ -83,7 +103,7 @@ function findTopThree(freq){
 	return [nums[0], nums[1], nums[2]]
 }
 
-function findLongDistanceActivity(tweet_array, freq){
+function findDistanceActivity(tweet_array, freq){
 	// console.log(freq);
 	let distanceArr1 = []
 	let distanceArr2 = [];
@@ -98,31 +118,90 @@ function findLongDistanceActivity(tweet_array, freq){
 			distanceArr2.push(tweet.distance)
 		}
 		else if(freq[2] == tweet.activityType){
-
 			distanceArr3.push(tweet.distance);
-
-			
 		}
 	});
 
+
+	//calculate averages for all 3
+	let avg1 = 0;
+	let avg2 = 0;
 	let avg3 = 0;
-	let sum = 0;
-	hasDistance3 = distanceArr3.length;
-	console.log(distanceArr3)
-	// console.log((distanceArr3[0] + distanceArr3[1]) / 2)
-	// console.log((distanceArr3[0] + distanceArr3[1] + distanceArr3[2]) / distanceArr3.length)
-	for(let i = 0; i < distanceArr3.length; i++){
-		// if()
-		// sum += distanceArr3[i];
+	let sum1 = 0;
+	let sum2 = 0;
+	let sum3 = 0;
+	let arrSize1 = distanceArr1.length
+	let arrSize2 = distanceArr2.length
+	let arrSize3 = distanceArr3.length
+	//distanceArr1 ::::::::::
+	for(let i = 0; i < distanceArr1.length; i++){
+		if(!(distanceArr1[i] === false || Number.isNaN(distanceArr1[i]))){
+			sum1 += distanceArr1[i];
+			
+		}
+		else{
+			arrSize1--;
+		}
 		
-		// console.log(distanceArr3[i].toFixed(2)) //1909, 1904 PROBLEM: some don't have distance
-		if(distanceArr3[i] === false || Number.isNaN(distanceArr3[i])){
-			console.log(typeof distanceArr3[i])
+	}
+
+	avg1 = (sum1 / arrSize1).toFixed(2);
+
+
+	//distanceArr2 ::::::::::
+
+	for(let i = 0; i < distanceArr2.length; i++){
+		if(!(distanceArr2[i] === false || Number.isNaN(distanceArr2[i]))){
+			sum2 += distanceArr2[i];
+			
+		}
+		else{
+			arrSize2--;
+		}
+		
+	}
+	avg2 = (sum2 / arrSize2).toFixed(2);
+
+
+	//distanceArr3::::::::::
+	for(let i = 0; i < distanceArr3.length; i++){
+		if(!(distanceArr3[i] === false || Number.isNaN(distanceArr3[i]))){
+			sum3 += distanceArr3[i];
+			
+		}
+		else{
+			arrSize3--;
 		}
 		
 	}
 	
-    
+	avg3 = (sum3 / arrSize3).toFixed(2);
+	
+    let max = Math.max(avg1, avg2, avg3);
+	let min = Math.min(avg1, avg2, avg3); /////////////////////////////////////////////////////////////////////////
+	
+	if(min == avg1){
+		min = 0;
+	}
+	else if(min == avg2){
+		min = 1;
+	}
+	else{
+		min = 2;
+	}
+
+	if(max == avg1){
+		max = 0;
+	}
+	else if(max == avg2){
+		max = 1;
+	}
+	else{
+		max = 2;
+	}
+	
+return([min, max])
+
 }
 
 
