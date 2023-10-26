@@ -44,10 +44,11 @@ class Tweet {
         return "";
     }
 
-    get activityType():string {
+    get activityType():string { //'Just completed a 5.17 km run with Runkeeper. Check it out! ♫ ♪ #Runkeeper https://t.co/XNYqY90VCG'
+        //Just completed a 5.17 km '
        
         if(this.source == "completed_event"){
-            if(this.text.includes("km")){
+            if(this.text.includes(" km ")){
             let pos = this.text.indexOf("km") + "km ".length;
             if(this.text.includes(" - ")){
                 console.log("case1")
@@ -59,7 +60,7 @@ class Tweet {
             }
             
             }
-            else if(this.text.includes("mi")){
+            else if(this.text.includes("mi ")){
                 let pos = this.text.indexOf("mi") + "mi ".length;
                 if(this.text.includes(" - ")){
                     console.log("case3")
@@ -71,15 +72,22 @@ class Tweet {
                 }
                 
             }
-            else{//includes("just posted a strength workout in")
-                let pos = this.text.indexOf("posted a ") + "posted a ".length;
+            else{
+                let pos;
+                if(this.text.includes(" an ")){
+                    pos = this.text.indexOf("posted an ") + "posted an ".length;
+                }
+                else{
+                    pos = this.text.indexOf("posted a ") + "posted a ".length;
+                }
+
                 if(this.text.includes(" in")){
                     console.log("case5")
-                    return this.text.substring(pos, this.text.indexOf(" in"));
+                    return this.text.substring(pos, this.text.indexOf(" in "));
                 }
                 else if(this.text.includes(" - ")){
                     console.log("case6")
-                    return this.text.substring(pos, this.text.indexOf(" -"));
+                    return this.text.substring(pos, this.text.indexOf(" - "));
                 }
                 else{
                     console.log("case7")

@@ -9,7 +9,22 @@ function parseTweets(runkeeper_tweets) {
 		return new Tweet(tweet.text, tweet.created_at);
 	});
 
-	console.log(tweet_array[47].distance)
+	// console.log(tweet_array[422].activityType)
+	let activities = [];
+	tweet_array.map(function(tweet){
+
+		if(tweet.source == "completed_event" && (!(activities.includes(tweet.activityType)))){
+			activities.push(tweet.activityType);
+		}
+	});
+	console.log([activities])
+
+	// tweet_array.map(function(tweet){
+	// 	if(tweet.source == "completed_event"){
+	// 		console.log([tweet.text], [tweet.activityType])
+	// 	}
+			
+	// });
 
 	//TODO: create a new array or manipulate tweet_array to create a graph of the number of tweets containing each type of activity.
 
