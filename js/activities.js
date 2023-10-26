@@ -11,20 +11,29 @@ function parseTweets(runkeeper_tweets) {
 
 	// console.log(tweet_array[422].activityType)
 	let activities = [];
+	let frequency = [];
 	tweet_array.map(function(tweet){
 
-		if(tweet.source == "completed_event" && (!(activities.includes(tweet.activityType)))){
+		if(tweet.source == "completed_event"){
+			if(!(activities.includes(tweet.activityType))){
 			activities.push(tweet.activityType);
+			frequency.push([tweet.activityType, 0]);
+			}
+			else{
+				for(let i = 0; i < frequency.length; i++){
+					if(frequency[i][0] == tweet.activityType){
+						frequency[i][1] = frequency[i][1] + 1;
+					}
+				}
+			}
 		}
-	});
-	console.log([activities])
 
-	// tweet_array.map(function(tweet){
-	// 	if(tweet.source == "completed_event"){
-	// 		console.log([tweet.text], [tweet.activityType])
-	// 	}
-			
-	// });
+	});
+	
+	document.getElementById("numberActivities").innerText = activities.length
+	let firstMost = document.getElementById("firstMost");
+	console.log((frequency))
+
 
 	//TODO: create a new array or manipulate tweet_array to create a graph of the number of tweets containing each type of activity.
 

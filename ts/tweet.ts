@@ -51,11 +51,15 @@ class Tweet {
             if(this.text.includes(" km ")){
             let pos = this.text.indexOf("km") + "km ".length;
             if(this.text.includes(" - ")){
-                console.log("case1")
+                // console.log("case1")
                 return this.text.substring(pos, this.text.indexOf(" -"));
             }
+            else if(this.text.includes("with Runkeeper")){
+                // console.log("no@");
+                return this.text.substring(pos, this.text.indexOf(" with Runkeeper"))
+            }
             else{
-                console.log("case2")
+                // console.log("case2")
                 return this.text.substring(pos, this.text.indexOf(" with @Runkeeper"));
             }
             
@@ -63,11 +67,11 @@ class Tweet {
             else if(this.text.includes("mi ")){
                 let pos = this.text.indexOf("mi") + "mi ".length;
                 if(this.text.includes(" - ")){
-                    console.log("case3")
+                    // console.log("case3")
                     return this.text.substring(pos, this.text.indexOf(" -"));   
                 }
                 else{
-                    console.log("case4")
+                    // console.log("case4")
                     return this.text.substring(pos, this.text.indexOf(" with @Runkeeper"));
                 }
                 
@@ -82,15 +86,15 @@ class Tweet {
                 }
 
                 if(this.text.includes(" in")){
-                    console.log("case5")
+                    // console.log("case5")
                     return this.text.substring(pos, this.text.indexOf(" in "));
                 }
                 else if(this.text.includes(" - ")){
-                    console.log("case6")
+                    // console.log("case6")
                     return this.text.substring(pos, this.text.indexOf(" - "));
                 }
                 else{
-                    console.log("case7")
+                    // console.log("case7")
                     return this.text.substring(pos, this.text.indexOf(" with @Runkeeper"));
                 }
             }
