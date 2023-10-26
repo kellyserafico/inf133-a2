@@ -32,6 +32,23 @@ function parseTweets(runkeeper_tweets) {
 		}
 	});
 
+	//fix this later
+
+// [[name, #], [name, #]]
+	let data = [];
+	// let activityName = [];
+	let occur = "";
+	for(let i = 0; i < frequency.length; i++){
+		data.push({})
+		data[i]['activities'] = frequency[i][0]
+		data[i]['occur'] = frequency[i][1]
+		// data[frequency[i][0]] = frequency[i][1];
+
+	}
+
+console.log(data)
+// console.log(frequency)
+
 	let topThree = findTopThree(frequency);
 	let firstMost = secondMost = thirdMost = "";
 	
@@ -86,15 +103,33 @@ function parseTweets(runkeeper_tweets) {
 
 	//TODO: create a new array or manipulate tweet_array to create a graph of the number of tweets containing each type of activity.
 
-	// activity_vis_spec = {
-	//   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-	//   "description": "A graph of the number of Tweets containing each type of activity.",
-	//   "data": {
-	//     "values": tweet_array
-	//   }
-	//   //TODO: Add mark and encoding
-	// };
-	// vegaEmbed('#activityVis', activity_vis_spec, {actions:false});
+	activity_vis_spec = {
+	  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+	  "description": "A graph of the number of Tweets containing each type of activity.",
+	  "data": {
+	    // "values": tweet_array,
+		"values": data
+		
+	  },
+	//   "transform": [{"filter": "datum.year == 2000"}],
+	//   "height": {"step": 17},
+	  "mark": "bar",
+	  "encoding": {
+		"y": {
+		  "field": "activities",
+		  "type": "ordinal",
+		  "sort": "-x",
+		  "title": "Activity Type"
+		},
+		"x": {
+		  "aggregate": "sum",
+		  "field": "occur",
+		  "title": "Frequency"
+		}
+	  }
+	  //TODO: Add mark and encoding
+	};
+	vegaEmbed('#activityVis', activity_vis_spec, {actions:true});
 
 	//TODO: create the visualizations which group the three most-tweeted activities by the day of the week.
 	//Use those visualizations to answer the questions about which activities tended to be longest and when.
