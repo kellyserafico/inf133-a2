@@ -1,3 +1,7 @@
+document.addEventListener('DOMContentLoaded', function (event) {
+	loadSavedRunkeeperTweets().then(parseTweets);
+});
+
 function parseTweets(runkeeper_tweets) {
 	//Do not proceed if no tweets loaded
 	if(runkeeper_tweets === undefined) {
@@ -49,7 +53,7 @@ function parseTweets(runkeeper_tweets) {
 	} 
 
 	
-	let maxAvg = findDistanceActivity(tweet_array, [firstMost, secondMost,thirdMost])[1]; // 2
+	let maxAvg = findDistanceActivity(tweet_array, [firstMost, secondMost,thirdMost])[1]; 
 	let minAvg = findDistanceActivity(tweet_array, [firstMost, secondMost,thirdMost])[0];
 	longestActivityType = document.getElementById("longestActivityType");
 	shortestActivityType = document.getElementById("shortestActivityType");
@@ -60,16 +64,14 @@ function parseTweets(runkeeper_tweets) {
 		case 1: longestActivityType.innerText = secondMost;
 			break;
 		default: longestActivityType.innerText = thirdMost;
-		console.log(longestActivityType)
 			break;
 	}
 
 	switch(minAvg){
 		case 0: shortestActivityType.innerText = firstMost;
-		// console.log("lkjdsfsdklfjlksdjflksdjlfkds")
+	
 			break;
 		case 1: shortestActivityType.innerText = secondMost;
-		console.log(shortestActivityType)
 			break;
 		default: shortestActivityType.innerText = thirdMost;	
 			break;
@@ -80,8 +82,7 @@ function parseTweets(runkeeper_tweets) {
 	document.getElementById("firstMost").innerText = firstMost;
 	document.getElementById("secondMost").innerText = secondMost;
 	document.getElementById("thirdMost").innerText = thirdMost;
-	
-
+	document.getElementById("weekdayOrWeekendLonger").innerText = longestActivities(tweet_array);
 
 	//TODO: create a new array or manipulate tweet_array to create a graph of the number of tweets containing each type of activity.
 
@@ -109,7 +110,6 @@ function findTopThree(freq){
 }
 
 function findDistanceActivity(tweet_array, freq){
-	// console.log(freq);
 	let distanceArr1 = []
 	let distanceArr2 = [];
 	let distanceArr3 = [];
@@ -149,12 +149,10 @@ function findDistanceActivity(tweet_array, freq){
 		}
 		
 	}
-
 	avg1 = (sum1 / arrSize1).toFixed(2);
 
 
 	//distanceArr2 ::::::::::
-
 	for(let i = 0; i < distanceArr2.length; i++){
 		if(!(distanceArr2[i] === false || Number.isNaN(distanceArr2[i]))){
 			sum2 += distanceArr2[i];
@@ -184,35 +182,62 @@ function findDistanceActivity(tweet_array, freq){
 	
     let max = Math.max(avg1, avg2, avg3);
 	let min = Math.min(avg1, avg2, avg3);
+
+	switch(min){
+		case 0: min = 0;
+			break;
+		case 1: min = 1;
+			break;
+		default: min = 2;
+			break;
+	}
 	
-	if(min == avg1){
-		min = 0;
-	}
-	else if(min == avg2){
-		min = 1;
-	}
-	else{
-		min = 2;
+	switch(max){
+		case 0: max = 0;
+			break;
+		case 1: max = 1;
+			break;
+		default: max = 2;
+			break;
 	}
 
-	if(max == avg1){
-		max = 0;
-	}
-	else if(max == avg2){
-		max = 1;
-	}
-	else{
-		max = 2;
+
+	return([min, max])
+}
+
+function longestActivities(tweet_array){ // take the average distance of all activities on weekedays vs the same on weekends.
+
+	let weekends = ["Sat", "Sun"]
+	let day = "";
+	let weekendSum = 0;
+	let weekendArrLength = 0;
+	let weekdaySum = 0;
+	let weekdayArrLength = 0;
+
+	tweet_array.map(function(tweet) {
+		day = tweet.time.toString();
+		if(weekends.includes(day.split(" ")[0])){ // if the tweet was made on a weekend
+			if(!(tweet.distance === false || Number.isNaN(tweet.distance))){ // if tweet has a distance
+				weekendSum += tweet.distance;
+				weekendArrLength++;
+			}
+
+		}
+		else{ // if tweet was made on weekday
+			if(!(tweet.distance === false || Number.isNaN(tweet.distance))){ // if tweet has a distance
+				weekdaySum += tweet.distance;
+				weekdayArrLength++;
+			}
+		}
+		
+	});
+	
+	if((weekendSum / weekendArrLength).toFixed(2) > (weekdaySum / weekdayArrLength).toFixed(2)){
+		return "weekends"
 	}
 	
-return([min, max])
+
 
 }
 
-
-
-
 //Wait for the DOM to load
-document.addEventListener('DOMContentLoaded', function (event) {
-	loadSavedRunkeeperTweets().then(parseTweets);
-});
