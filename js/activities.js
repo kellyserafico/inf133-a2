@@ -9,11 +9,10 @@ function parseTweets(runkeeper_tweets) {
 		return new Tweet(tweet.text, tweet.created_at);
 	});
 
-	// console.log(tweet_array[422].activityType)
 	let activities = [];
 	let frequency = [];
-	tweet_array.map(function(tweet){
-
+	tweet_array.map(function(tweet){ // populating activities with unique activities and populating frequency with # of occurances
+		
 		if(tweet.source == "completed_event"){
 			if(!(activities.includes(tweet.activityType))){
 			activities.push(tweet.activityType);
@@ -30,20 +29,24 @@ function parseTweets(runkeeper_tweets) {
 	});
 	let topThree = findTopThree(frequency);
 	let firstMost = secondMost = thirdMost = "";
-	console.log(firstMost)
+	
+	
 	for(let i = 0; i < frequency.length; i++){
 		if (topThree[0] == frequency[i][1]){
 			firstMost = frequency[i][0];
+		
 		}
 		else if(topThree[1] == frequency[i][1]){
 			secondMost = frequency[i][0];
+			
 		}
 		else if(topThree[2] == frequency[i][1]){
 			thirdMost = frequency[i][0];
+			
 		}
 	}
 	
-	
+	findLongDistanceActivity(tweet_array, [firstMost, secondMost,thirdMost])
 	
 	document.getElementById("numberActivities").innerText = activities.length
 	document.getElementById("firstMost").innerText = firstMost;
@@ -76,6 +79,16 @@ function findTopThree(freq){
 	return [nums[0], nums[1], nums[2]]
 }
 
+function findLongDistanceActivity(tweet_array, freq){
+	console.log(freq)
+	tweet_array.map(function(tweet){ 
+		for(let i = 0; i < freq.length; i++){
+			
+		}
+		
+	});
+
+}
 
 
 
