@@ -32,23 +32,6 @@ function parseTweets(runkeeper_tweets) {
 		}
 	});
 
-	//fix this later
-
-// [[name, #], [name, #]]
-	let data = [];
-	// let activityName = [];
-	let occur = "";
-	for(let i = 0; i < frequency.length; i++){
-		data.push({})
-		data[i]['activities'] = frequency[i][0]
-		data[i]['occur'] = frequency[i][1]
-		// data[frequency[i][0]] = frequency[i][1];
-
-	}
-
-console.log(data)
-// console.log(frequency)
-
 	let topThree = findTopThree(frequency);
 	let firstMost = secondMost = thirdMost = "";
 	
@@ -86,7 +69,6 @@ console.log(data)
 
 	switch(minAvg){
 		case 0: shortestActivityType.innerText = firstMost;
-	
 			break;
 		case 1: shortestActivityType.innerText = secondMost;
 			break;
@@ -102,13 +84,19 @@ console.log(data)
 	document.getElementById("weekdayOrWeekendLonger").innerText = longestActivities(tweet_array);
 
 	//TODO: create a new array or manipulate tweet_array to create a graph of the number of tweets containing each type of activity.
-
+	
+	let activityTypeData = [];
+	for(let i = 0; i < frequency.length; i++){
+		activityTypeData.push({});
+		activityTypeData[i]['activityName'] = frequency[i][0];
+		activityTypeData[i]['occur'] = frequency[i][1];
+	}
 	activity_vis_spec = {
 	  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
 	  "description": "A graph of the number of Tweets containing each type of activity.",
 	  "data": {
 	    // "values": tweet_array,
-		"values": data
+		"values": activityTypeData
 		
 	  },
 	//   "transform": [{"filter": "datum.year == 2000"}],
@@ -116,7 +104,7 @@ console.log(data)
 	  "mark": "bar",
 	  "encoding": {
 		"y": {
-		  "field": "activities",
+		  "field": "activityName",
 		  "type": "ordinal",
 		  "sort": "-x",
 		  "title": "Activity Type"
@@ -127,12 +115,80 @@ console.log(data)
 		  "title": "Frequency"
 		}
 	  }
-	  //TODO: Add mark and encoding
+	  
 	};
-	vegaEmbed('#activityVis', activity_vis_spec, {actions:true});
 
-	//TODO: create the visualizations which group the three most-tweeted activities by the day of the week.
-	//Use those visualizations to answer the questions about which activities tended to be longest and when.
+	let distanceData = [];
+	let day = "";
+	let counter = 0;
+	let topThreeActivityTypes = [firstMost, secondMost, thirdMost];
+	tweet_array.map(function(tweet){  // only top three
+		if(topThreeActivityTypes.includes(tweet.activityType)){
+			if(!(tweet.distance === false || Number.isNaN(tweet.distance))){
+				day = tweet.time.toString();
+				day = day.split(" ")[0];
+				distanceData.push({});
+				distanceData[counter]['distance'] = tweet.distance;
+				distanceData[counter]['day'] = day;
+				distanceData[counter]["activityName"] = tweet.activityType;
+				counter++;
+			}
+		}
+	});
+
+	activity_by_day_vis_spec = {
+		"$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+		"description": "A graph of the number of Tweets containing each type of activity by day.",
+		"data": {
+		  // "values": tweet_array,
+		  "values": distanceData
+		  
+		},
+		"mark": "point",
+		"encoding": {
+			"x": {"field": "day", "type": "nominal", "sort": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]},
+			"y": {"field": "distance", "type": "quantitative"},
+			"color": {"field": "activityName", "type": "nominal"}
+			// "yOffset": {"field": "random", "type": "quantitative"}
+		}
+		
+	  };
+
+
+	  	///////////////////////////////////////////////////////////// THIRD PLOT
+	  console.log(distanceData)
+	  let activity_mean_vis_spec = [];
+	  for(let i = 0; i < distanceData; i++){
+		
+	  }
+	
+	  activity_mean_vis_spec = {
+		"$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+		"description": "A graph of the number of Tweets containing each type of activity by day.",
+		"data": {
+		  // "values": tweet_array,
+		  "values": distanceMeanData
+		  
+		},
+		"mark": "point",
+		"encoding": {
+			"x": {"field": "day", "type": "nominal", "sort": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]},
+			"y": {"field": "distance", "type": "quantitative"},
+			"color": {"field": "activityName", "type": "nominal"}
+			// "yOffset": {"field": "random", "type": "quantitative"}
+		}
+	  };
+
+
+	aggregate = document.getElementById("aggregate");
+	vegaEmbed('#activityVis', activity_vis_spec, {actions:false});
+	
+	if(aggregate.innerHTML == "Click to Show Mean"){
+		vegaEmbed("#distanceVis", activity_by_day_vis_spec, {actions:false});
+	}
+	else{
+		vegaEmbed("#distanceVisAggregated", activity_mean_vis_spec, {actions:false});
+	}
 }
 
 function findTopThree(freq){
@@ -275,4 +331,12 @@ function longestActivities(tweet_array){ // take the average distance of all act
 
 }
 
-//Wait for the DOM to load
+function changeText(){
+	button = document.getElementById("aggregate");
+	if(button.innerHTML == "Click to Show Mean"){
+		button.innerHTML = "Click to Show All Activities";
+	}
+	else{
+		button.innerHTML = "Click to Show Mean"
+	}
+}
