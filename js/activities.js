@@ -55,33 +55,33 @@ function parseTweets(runkeeper_tweets) {
 	
 	let maxAvg = findDistanceActivity(tweet_array, [firstMost, secondMost,thirdMost])[1]; 
 	let minAvg = findDistanceActivity(tweet_array, [firstMost, secondMost,thirdMost])[0];
-	longestActivityType = document.getElementById("longestActivityType");
-	shortestActivityType = document.getElementById("shortestActivityType");
+    longestActivityType = $("#longestActivityType");
+	shortestActivityType = $("#shortestActivityType");
 
 	switch(maxAvg){
-		case 0: longestActivityType.innerText = firstMost;
+		case 0: longestActivityType.text(firstMost);
 			break;
-		case 1: longestActivityType.innerText = secondMost;
+		case 1: longestActivityType.text(secondMost);
 			break;
-		default: longestActivityType.innerText = thirdMost;
+		default: longestActivityType.text(thirdMost);
 			break;
 	}
 
 	switch(minAvg){
-		case 0: shortestActivityType.innerText = firstMost;
+		case 0: shortestActivityType.text(firstMost);
 			break;
-		case 1: shortestActivityType.innerText = secondMost;
+		case 1: shortestActivityType.text(secondMost);
 			break;
-		default: shortestActivityType.innerText = thirdMost;	
+		default: shortestActivityType.text(thirdMost);
 			break;
 	}
 
 
-	document.getElementById("numberActivities").innerText = activities.length;
-	document.getElementById("firstMost").innerText = firstMost;
-	document.getElementById("secondMost").innerText = secondMost;
-	document.getElementById("thirdMost").innerText = thirdMost;
-	document.getElementById("weekdayOrWeekendLonger").innerText = longestActivities(tweet_array);
+	$("#numberActivities").text(activities.length);
+	$("#firstMost").text(firstMost);
+	$("#secondMost").text(secondMost);
+	$("#thirdMost").text(thirdMost);
+	$("#weekdayOrWeekendLonger").text(longestActivities(tweet_array));
 
 	//TODO: create a new array or manipulate tweet_array to create a graph of the number of tweets containing each type of activity.
 	
@@ -180,10 +180,10 @@ function parseTweets(runkeeper_tweets) {
 	//   };
 
 
-	aggregate = document.getElementById("aggregate");
+	aggregate = $("#aggregate");
 	vegaEmbed('#activityVis', activity_vis_spec, {actions:false});
 	
-	if(aggregate.innerHTML == "Click to Show Mean"){
+	if(aggregate.text() == "Click to Show Mean"){
 		vegaEmbed("#distanceVis", activity_by_day_vis_spec, {actions:false});
 	}
 	else{
@@ -332,11 +332,11 @@ function longestActivities(tweet_array){ // take the average distance of all act
 }
 
 function changeText(){
-	button = document.getElementById("aggregate");
-	if(button.innerHTML == "Click to Show Mean"){
-		button.innerHTML = "Click to Show All Activities";
+	button = $("#aggregate");
+	if(button.text() == "Click to Show Mean"){
+		button.text("Click to Show All Activities");
 	}
 	else{
-		button.innerHTML = "Click to Show Mean"
+		button.text("Click to Show Mean");
 	}
 }

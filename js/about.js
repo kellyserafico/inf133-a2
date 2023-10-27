@@ -39,48 +39,22 @@ function parseTweets(runkeeper_tweets) {
 	//TODO: convert to jQuery
 	//TODO: FIND DATES
 	let count = 0;
-	document.getElementById('numberTweets').innerText = tweet_array.length;	
-	document.getElementById('firstDate').innerText = formatDate(tweet_array[getMinDateIndex(tweet_array)]["time"]);
-	document.getElementById("lastDate").innerText = formatDate(tweet_array[getMaxDateIndex(tweet_array)]["time"]);
+    $('#numberTweets').text(tweet_array.length);
+    $('#firstDate').text(formatDate(tweet_array[getMinDateIndex(tweet_array)]["time"]));
+    $('#lastDate').text(formatDate(tweet_array[getMaxDateIndex(tweet_array)]["time"]));
 
-	
-	let completedEvents = document.querySelectorAll('.completedEvents');
-	completedEvents.forEach(completedEvents => {
-		completedEvents.innerHTML = numCompletedEvents(tweet_array);
-	});
-	let completedEventsPct = document.querySelectorAll(".completedEventsPct");
-	completedEventsPct.forEach(completedEventsPct => {completedEventsPct.innerHTML = math.format((numCompletedEvents(tweet_array) / tweet_array.length * 100), {notation: 'fixed', precision: 2}) + "%"});
+    eventsArr = ['completedEvents', 'completedEventsPct', 'liveEvents', 'liveEventsPct', 'achievements', 
+    'achievementsPct', 'miscellaneous', 'miscellaneousPct', 'written', 'writtenPct'];
 
-	let liveEvents = document.querySelectorAll('.liveEvents');
-	liveEvents.forEach(liveEvents => {
-	liveEvents.innerHTML = numLiveEvents(tweet_array);
-	});
-	let liveEventsPct = document.querySelectorAll(".liveEventsPct");
-	liveEventsPct.forEach(liveEventsPct => {liveEventsPct.innerHTML = math.format((numLiveEvents(tweet_array) / tweet_array.length * 100), {notation: 'fixed', precision: 2}) + "%"});
+    functionsArr = [numCompletedEvents, numLiveEvents, numAchievements, numMisc, numWritten,]
 
-
-	let achievements = document.querySelectorAll('.achievements');
-	achievements.forEach(achievements => {
-		achievements.innerHTML = numAchievements(tweet_array);
-	});
-	let achievementsPct = document.querySelectorAll(".achievementsPct");
-	achievementsPct.forEach(achievementsPct => {achievementsPct.innerHTML = math.format((numAchievements(tweet_array) / tweet_array.length * 100), {notation: 'fixed', precision: 2}) + "%"});
-
-
-	let miscellaneous = document.querySelectorAll(".miscellaneous");
-	miscellaneous.forEach(miscellaneous => {
-		miscellaneous.innerHTML = numMisc(tweet_array)//63
-	});
-	let miscellaneousPct = document.querySelectorAll(".miscellaneousPct");
-	miscellaneousPct.forEach(miscellaneousPct => {miscellaneousPct.innerHTML = math.format((numMisc(tweet_array) / tweet_array.length * 100), {notation: 'fixed', precision: 2}) + "%"});
-
-	let written = document.querySelectorAll(".written");
-	written.forEach(written => {
-		written.innerHTML = numWritten(tweet_array);
-	});
-	let writtenPct = document.querySelectorAll(".writtenPct");
-	writtenPct.forEach(writtenPct => {writtenPct.innerHTML = math.format((numWritten(tweet_array) / numCompletedEvents(tweet_array) * 100), {notation: 'fixed', precision: 2}) + "%"});
-
+    for(let i = 0; i < eventsArr.length; i+=2){
+        let tempVar = $('.' + eventsArr[i]);
+        tempVar.text(functionsArr[i/2](tweet_array))  
+        let tempVar2 = $('.' + eventsArr[i+1]);
+        tempVar2.text(math.format((functionsArr[i/2](tweet_array) / tweet_array.length * 100), {notation: 'fixed', precision: 2}) + "%")
+   
+    }
 }
 
 //Wait for the DOM to load

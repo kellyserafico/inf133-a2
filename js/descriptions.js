@@ -16,36 +16,37 @@ function parseTweets(runkeeper_tweets) {
 function addEventHandlerForSearch(tweet_array) {
 
 	//TODO: Search the written tweets as text is entered into the search box, and add them to the table
-	let textFilter = document.getElementById("textFilter");
-	let searchCount = document.getElementById("searchCount");
-	let searchText = document.getElementById("searchText");
+    let textFilter = $("#textFilter");
+	let searchCount = $("#searchCount");
+	let searchText = $("#searchText");
 	// searchCount.innerHTML = 0;
-	searchText.innerHTML = "";
-	textFilter.addEventListener("keyup", (event) =>{
-		searchCount.innerHTML = 0;
-		// console.log(textFilter.value)
-		searchText.innerHTML = textFilter.value;
-		filterTweets(textFilter.value, tweet_array, searchCount);
+	searchText.text("");
+	textFilter.on("keyup", (event) =>{
+		searchCount.text(0);
+		searchText.text(textFilter.val());
+		filterTweets(textFilter.val(), tweet_array, searchCount);
 		
 	});
 	
 }
 
 function filterTweets(input, tweet_array, searchCount){
-	let tweetTable = document.getElementById("tweetTable");
+	let tweetTable = $("#tweetTable");
 	let cnt = 0;
-	tweetTable.innerHTML = "";
+	tweetTable.text("");
 	tweet_array.map(function(tweet){
 		if(input == ""){
 			return;
 		}
 		else if(tweet.text.toLowerCase().includes(input.toLowerCase())){
-			searchCount.innerHTML++;
+            curCount = parseInt(searchCount.text());
+            curCount++;
+			searchCount.text(curCount);
 			//populate table
 			cnt++;
 			let row = tweet.getHTMLTableRow(cnt)
 			// console.log(typeof row)
-			tweetTable.appendChild(row)
+			tweetTable.append(row)
 		}
 	});
 }
