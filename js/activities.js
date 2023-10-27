@@ -156,28 +156,28 @@ function parseTweets(runkeeper_tweets) {
 
 
 	  	///////////////////////////////////////////////////////////// THIRD PLOT
-	  console.log(distanceData)
-	  let activity_mean_vis_spec = [];
-	  for(let i = 0; i < distanceData; i++){
+	//   console.log(distanceData)
+	//   let activity_mean_vis_spec = [];
+	//   for(let i = 0; i < distanceData; i++){
 		
-	  }
+	//   }
 	
-	  activity_mean_vis_spec = {
-		"$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-		"description": "A graph of the number of Tweets containing each type of activity by day.",
-		"data": {
-		  // "values": tweet_array,
-		  "values": distanceMeanData
+	//   activity_mean_vis_spec = {
+	// 	"$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+	// 	"description": "A graph of the number of Tweets containing each type of activity by day.",
+	// 	"data": {
+	// 	  // "values": tweet_array,
+	// 	  "values": distanceMeanData
 		  
-		},
-		"mark": "point",
-		"encoding": {
-			"x": {"field": "day", "type": "nominal", "sort": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]},
-			"y": {"field": "distance", "type": "quantitative"},
-			"color": {"field": "activityName", "type": "nominal"}
-			// "yOffset": {"field": "random", "type": "quantitative"}
-		}
-	  };
+	// 	},
+	// 	"mark": "point",
+	// 	"encoding": {
+	// 		"x": {"field": "day", "type": "nominal", "sort": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]},
+	// 		"y": {"field": "distance", "type": "quantitative"},
+	// 		"color": {"field": "activityName", "type": "nominal"}
+	// 		// "yOffset": {"field": "random", "type": "quantitative"}
+	// 	}
+	//   };
 
 
 	aggregate = document.getElementById("aggregate");
@@ -187,7 +187,7 @@ function parseTweets(runkeeper_tweets) {
 		vegaEmbed("#distanceVis", activity_by_day_vis_spec, {actions:false});
 	}
 	else{
-		vegaEmbed("#distanceVisAggregated", activity_mean_vis_spec, {actions:false});
+		// vegaEmbed("#distanceVisAggregated", activity_mean_vis_spec, {actions:false});
 	}
 }
 
