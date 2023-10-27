@@ -156,39 +156,55 @@ function parseTweets(runkeeper_tweets) {
 
 
 	  	///////////////////////////////////////////////////////////// THIRD PLOT
-	//   console.log(distanceData)
-	//   let activity_mean_vis_spec = [];
-	//   for(let i = 0; i < distanceData; i++){
-		
-	//   }
+    console.log(distanceData[0])
+    let distanceMeanData = [];
+    let categories = {};
+    for (let i = 0; i < distanceData.length; i++){
+    if (distanceData[i]['activityName'] in categories){
+        categories[distanceData[i]['activityName']][distanceData[i]['day']][0] += distanceData[i]['distance']
+        categories[distanceData[i]['activityName']][distanceData[i]['day']][1] += 1
+        // categories[distanceData[i]['activityName']][distanceData[i]['day']][0] /= categories[distanceData[i]['activityName']][distanceData[i]['day']][1]
+    }else{
+        categories[distanceData[i]['activityName']] = {'Sat': [0, 0], 'Sun': [0, 0], 'Mon': [0, 0],'Tue': [0, 0],'Wed': [0, 0],'Thu': [0, 0],'Fri': [0, 0]}
+    }
+    }
+
+    for(let activity of Object.entries(categories)){
+        for(let day of Object.entries(activity[1])){
+            let tempDict = {}
+            tempDict['distance'] = day[1][0] / day[1][1]
+            tempDict['day'] = day[0]
+            tempDict['activityName'] = activity[0]
+            distanceMeanData.push(tempDict)
+
+        }
+    }
+
 	
-	//   activity_mean_vis_spec = {
-	// 	"$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-	// 	"description": "A graph of the number of Tweets containing each type of activity by day.",
-	// 	"data": {
-	// 	  // "values": tweet_array,
-	// 	  "values": distanceMeanData
+	  activity_mean_vis_spec = {
+		"$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+		"description": "A graph of the number of Tweets containing each type of activity by day.",
+		"data": {
+		  // "values": tweet_array,
+		  "values": distanceMeanData
 		  
-	// 	},
-	// 	"mark": "point",
-	// 	"encoding": {
-	// 		"x": {"field": "day", "type": "nominal", "sort": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]},
-	// 		"y": {"field": "distance", "type": "quantitative"},
-	// 		"color": {"field": "activityName", "type": "nominal"}
-	// 		// "yOffset": {"field": "random", "type": "quantitative"}
-	// 	}
-	//   };
+		},
+		"mark": "point",
+		"encoding": {
+			"x": {"field": "day", "type": "nominal", "sort": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]},
+			"y": {"field": "distance", "type": "quantitative"},
+			"color": {"field": "activityName", "type": "nominal"}
+			// "yOffset": {"field": "random", "type": "quantitative"}
+		}
+	  };
 
 
 	aggregate = $("#aggregate");
 	vegaEmbed('#activityVis', activity_vis_spec, {actions:false});
-	
-	if(aggregate.text() == "Click to Show Mean"){
-		vegaEmbed("#distanceVis", activity_by_day_vis_spec, {actions:false});
-	}
-	else{
-		// vegaEmbed("#distanceVisAggregated", activity_mean_vis_spec, {actions:false});
-	}
+	vegaEmbed("#distanceVis", activity_by_day_vis_spec, {actions:false});
+    vegaEmbed("#distanceVisAggregated", activity_mean_vis_spec, {actions:false});
+    $('#distanceVisAggregated').css('display', 'none');
+
 }
 
 function findTopThree(freq){
@@ -335,8 +351,12 @@ function changeText(){
 	button = $("#aggregate");
 	if(button.text() == "Click to Show Mean"){
 		button.text("Click to Show All Activities");
+        $('#distanceVisAggregated').css('display', '');
+        $('#distanceVis').css('display', 'none');
 	}
 	else{
 		button.text("Click to Show Mean");
+        $('#distanceVisAggregated').css('display', 'none');
+        $('#distanceVis').css('display', '');
 	}
 }
