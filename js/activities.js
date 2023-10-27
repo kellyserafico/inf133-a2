@@ -156,8 +156,7 @@ function parseTweets(runkeeper_tweets) {
 
 
 	  	///////////////////////////////////////////////////////////// THIRD PLOT
-    console.log(distanceData[0])
-    let distanceMeanData = [];
+
     let categories = {};
     for (let i = 0; i < distanceData.length; i++){
     if (distanceData[i]['activityName'] in categories){
@@ -168,6 +167,7 @@ function parseTweets(runkeeper_tweets) {
         categories[distanceData[i]['activityName']] = {'Sat': [0, 0], 'Sun': [0, 0], 'Mon': [0, 0],'Tue': [0, 0],'Wed': [0, 0],'Thu': [0, 0],'Fri': [0, 0]}
     }
     }
+    let distanceMeanData = [];
 
     for(let activity of Object.entries(categories)){
         for(let day of Object.entries(activity[1])){
