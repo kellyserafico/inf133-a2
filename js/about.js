@@ -1,3 +1,28 @@
+function getMinDateIndex(arr){
+    minIndex = 0;
+    minDate = Date.parse(arr[0]['time']);
+    for(let i = 0; i < arr.length; i++){
+        if (Date.parse(arr[i]['time']) <= minDate){
+            minIndex = i
+            minDate = Date.parse(arr[i]['time'])
+        }
+    }
+    return minIndex
+}
+
+function getMaxDateIndex(arr){
+    maxIndex = 0;
+    maxDate = Date.parse(arr[0]['time']);
+    for(let i = 0; i < arr.length; i++){
+        if (Date.parse(arr[i]['time']) >= maxDate){
+            maxIndex = i
+            maxDate = Date.parse(arr[i]['time'])
+        }
+    }
+    return maxIndex
+}
+
+
 function parseTweets(runkeeper_tweets) {
 	//Do not proceed if no tweets loaded
 	if(runkeeper_tweets === undefined) {
@@ -15,8 +40,9 @@ function parseTweets(runkeeper_tweets) {
 	//TODO: FIND DATES
 	let count = 0;
 	document.getElementById('numberTweets').innerText = tweet_array.length;	
-	document.getElementById('firstDate').innerText = formatDate(tweet_array[tweet_array.length - 2]["time"]);
-	document.getElementById("lastDate").innerText = formatDate(tweet_array[0]["time"]);
+	document.getElementById('firstDate').innerText = formatDate(tweet_array[getMinDateIndex(tweet_array)]["time"]);
+	document.getElementById("lastDate").innerText = formatDate(tweet_array[getMaxDateIndex(tweet_array)]["time"]);
+
 	
 	let completedEvents = document.querySelectorAll('.completedEvents');
 	completedEvents.forEach(completedEvents => {
