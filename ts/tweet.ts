@@ -138,7 +138,18 @@ class Tweet {
 
         cell1.innerHTML = rowNumber;
         cell2.innerHTML = this.activityType;
-        cell3.innerHTML = this.text;
+
+        let splitText = this.text.split(" ");
+        for(let i = 0; i < splitText.length; i++){
+            if (splitText[i].includes('https')){
+                let tempString = '<a href="' + splitText[i] + '" target="_blank">' + splitText[i] + '</a>'
+                splitText[i] = tempString;
+                break;
+            }
+        }
+        let newText = splitText.join(' ');
+        cell3.innerHTML = newText;
+
         return row;
         
     }
